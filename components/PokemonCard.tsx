@@ -1,6 +1,8 @@
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { Link } from "expo-router";
 import { Colors } from "@/constants/colors";
+import { UseFontStyle } from "@/hooks/useFontStyle";
+import { capitalize } from "@/functions/pokemon";
 
 type Props = {
   id: number;
@@ -11,7 +13,12 @@ export const PokemonCard = ({ id, name }: Props) => {
   return (
     <Link href={{ pathname: "/pokemon/[id]", params: { id: id } }} asChild>
       <Pressable android_ripple={{ color: Colors.red }} style={styles.card}>
-        <Text style={styles.id}>{`#${id.toString().padStart(3, "0")}`}</Text>
+        <UseFontStyle
+          text={`#${id.toString().padStart(3, "0")}`}
+          variant="caption"
+          color={Colors.grey}
+          style={{ alignSelf: "flex-end" }}
+        />
         <Image
           width={72}
           height={72}
@@ -19,7 +26,7 @@ export const PokemonCard = ({ id, name }: Props) => {
             uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`,
           }}
         />
-        <Text style={styles.name}>{name}</Text>
+        <UseFontStyle text={capitalize(name)} variant="body3" />
         <View style={styles.footer}></View>
       </Pressable>
     </Link>
@@ -37,14 +44,6 @@ const styles = StyleSheet.create({
     position: "relative",
     zIndex: 1,
     alignItems: "center",
-  },
-  id: {
-    alignSelf: "flex-end",
-    fontSize: 10,
-    color: Colors.grey,
-  },
-  name: {
-    fontSize: 12,
   },
   footer: {
     position: "absolute",

@@ -5,6 +5,7 @@ import {
   StyleSheet,
   Text,
   View,
+  ViewStyle,
 } from "react-native";
 import { useInfiniteFetchQuery } from "../hooks/useFetchQuery";
 import { getPokemonId } from "../functions/pokemon";
@@ -14,6 +15,8 @@ import { SortButton } from "@/components/SortButton";
 import { Colors } from "@/constants/colors";
 import { PokemonCard } from "@/components/PokemonCard";
 import { RootView } from "@/components/RootView";
+import { UseFontStyle } from "@/hooks/useFontStyle";
+import { Row } from "@/components/Row";
 
 export default function Index() {
   const [search, setSearch] = useState("");
@@ -32,14 +35,14 @@ export default function Index() {
 
   return (
     <RootView>
-      <View style={styles.header}>
+      <Row style={styles.header}>
         <Image
           width={24}
           height={24}
           source={require("@/assets/images/pokeball.png")}
         />
-        <Text style={styles.title}>Pokedex</Text>
-      </View>
+        <UseFontStyle text="Pokedex" variant="headline" color={Colors.white} />
+      </Row>
       <View style={styles.optionBar}>
         <SearchBar setSearch={setSearch} />
         <SortButton />
@@ -70,15 +73,10 @@ const styles = StyleSheet.create({
     gap: 16,
   },
   header: {
-    flexDirection: "row",
     alignItems: "center",
     gap: 16,
     paddingLeft: 16,
     paddingRight: 16,
-  },
-  title: {
-    fontSize: 24,
-    color: Colors.white,
   },
   optionBar: {
     flexDirection: "row",
