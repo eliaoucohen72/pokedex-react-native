@@ -43,10 +43,10 @@ export default function Index() {
         />
         <UseFontStyle text="Pokedex" variant="headline" color={Colors.white} />
       </Row>
-      <View style={styles.optionBar}>
+      <Row style={styles.optionBar}>
         <SearchBar setSearch={setSearch} />
         <SortButton />
-      </View>
+      </Row>
       <FlatList
         style={styles.list}
         data={filteredPokemons}
@@ -73,13 +73,11 @@ const styles = StyleSheet.create({
     gap: 16,
   },
   header: {
-    alignItems: "center",
     gap: 16,
     paddingLeft: 16,
     paddingRight: 16,
   },
   optionBar: {
-    flexDirection: "row",
     gap: 16,
     paddingLeft: 16,
     paddingRight: 16,

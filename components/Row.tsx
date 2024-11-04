@@ -11,5 +11,6 @@ export const Row = ({ children, style }: Props) => {
 const styles = StyleSheet.create({
   row: {
     flexDirection: "row",
+    alignItems: 'center'
   },
 });

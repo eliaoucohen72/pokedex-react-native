@@ -3,7 +3,6 @@ import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 const endpoint = "https://pokeapi.co/api/v2";
 
 export function useFetchQuery(path: string) {
-  console.log("aaaaaaaaaaaaa ", endpoint + path);
   return useQuery({
     queryKey: [path],
     queryFn: async () => {
@@ -12,9 +11,9 @@ export function useFetchQuery(path: string) {
   });
 }
 
-function wait(duration: number) {
-  return new Promise((resolve) => setTimeout(resolve, duration * 1000));
-}
+// function wait(duration: number) {
+//   return new Promise((resolve) => setTimeout(resolve, duration * 1000));
+// }
 
 export function useInfiniteFetchQuery(path: string) {
   return useInfiniteQuery({

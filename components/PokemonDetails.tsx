@@ -6,6 +6,16 @@ import { GetSinglePokemon } from "@/types/GetSinglePokemon";
 import { Link } from "expo-router";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { PokemonStat } from "./PokemonStat";
+import { Row } from "./Row";
+
+const Stats = {
+  hp: "hp",
+  atk: "attack",
+  def: "defense",
+  satk: "special-attack",
+  sdef: "special-defense",
+  spd: "speed",
+};
 
 type Props = {
   id: string | string[];
@@ -13,11 +23,17 @@ type Props = {
 };
 
 export const PokemonDetails = ({ id, pokemon }: Props) => {
-  const { types, weight, height, name, abilities } = pokemon;
+  const { types, weight, height, name, abilities, stats } = pokemon;
 
   const backgroundColor = types?.[0]?.type?.name
     ? getPokemonColor(types[0].type.name)
     : "#fff";
+
+  const getStatValue = (stateName: string) => {
+    return Number(
+      stats?.find((e) => e.stat.name === stateName)?.base_stat ?? -1
+    );
+  };
 
   return (
     <RootView style={{ ...styles.container, backgroundColor }}>
@@ -27,8 +43,8 @@ export const PokemonDetails = ({ id, pokemon }: Props) => {
         source={require("@/assets/images/big_pokeball.png")}
         style={styles.pokeball}
       />
-      <View style={styles.header}>
-        <View style={styles.headerLeft}>
+      <Row style={styles.header}>
+        <Row style={styles.headerLeft}>
           <Link href={{ pathname: "/" }} asChild>
             <Pressable>
               <Image
@@ -43,13 +59,13 @@ export const PokemonDetails = ({ id, pokemon }: Props) => {
             variant="headline"
             color={Colors.white}
           />
-        </View>
+        </Row>
         <UseFontStyle
           text={`#${id.toString().padStart(3, "0")}`}
           variant="subtitle3"
           color={Colors.white}
         />
-      </View>
+      </Row>
       <Image
         style={styles.pokemon_image}
         width={200}
@@ -59,7 +75,7 @@ export const PokemonDetails = ({ id, pokemon }: Props) => {
         }}
       />
       <View style={styles.body}>
-        <View style={styles.types}>
+        <Row style={styles.types}>
           {types?.map((e, index) => (
             <UseFontStyle
               key={index}
@@ -71,16 +87,16 @@ export const PokemonDetails = ({ id, pokemon }: Props) => {
               }}
             />
           ))}
-        </View>
+        </Row>
         <UseFontStyle
           text="About"
           variant="subtitle1"
           color={backgroundColor}
           style={{ textAlign: "center" }}
         />
-        <View style={styles.detailContainer}>
+        <Row style={styles.detailContainer}>
           <View style={styles.detail}>
-            <View style={styles.detailValue}>
+            <Row style={styles.detailValue}>
               <Image
                 width={16}
                 height={16}
@@ -88,46 +104,46 @@ export const PokemonDetails = ({ id, pokemon }: Props) => {
               />
               <UseFontStyle text={`${weight / 10} kg`} variant="body3" />
               <Text></Text>
-            </View>
+            </Row>
             <UseFontStyle text="Weight" variant="body3" color={Colors.grey} />
           </View>
           <View style={styles.detail}>
-            <View style={styles.detailValue}>
+            <Row style={styles.detailValue}>
               <Image
                 width={16}
                 height={16}
                 source={require("@/assets/images/height.png")}
               />
               <UseFontStyle text={`${height / 10} m`} variant="body3" />
-            </View>
+            </Row>
             <UseFontStyle text="Height" variant="body3" color={Colors.grey} />
           </View>
           <View style={styles.detail}>
-            <View style={styles.detailValue}>
+            <Row style={styles.detailValue}>
               <UseFontStyle
                 text={abilities
                   ?.map((e) => capitalize(e.ability.name))
                   .join("\n")}
                 variant="body3"
               />
-            </View>
+            </Row>
             <UseFontStyle text="Moves" variant="body3" color={Colors.grey} />
           </View>
-        </View>
+        </Row>
         <UseFontStyle
           text="Base Stats"
           variant="subtitle1"
           color={backgroundColor}
           style={{ textAlign: "center" }}
         />
-        <View>
-          <PokemonStat color={backgroundColor} name="HP" value={11} />
-          <PokemonStat color={backgroundColor} name="ATK" value={11} />
-          <PokemonStat color={backgroundColor} name="DEF" value={11} />
-          <PokemonStat color={backgroundColor} name="SATK" value={11} />
-          <PokemonStat color={backgroundColor} name="SPEF" value={11} />
-          <PokemonStat color={backgroundColor} name="SPD" value={11} />
-        </View>
+        {Object.entries(Stats).map((stat, index) => (
+          <PokemonStat
+            key={index}
+            color={backgroundColor}
+            name={stat[0].toUpperCase()}
+            value={getStatValue(stat[1])}
+          />
+        ))}
       </View>
     </RootView>
   );
@@ -144,14 +160,12 @@ const styles = StyleSheet.create({
     right: 5,
   },
   header: {
-    flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     paddingLeft: 20,
     paddingRight: 20,
   },
   headerLeft: {
-    flexDirection: "row",
     gap: 10,
   },
   body: {
@@ -162,7 +176,6 @@ const styles = StyleSheet.create({
     gap: 20,
   },
   types: {
-    flexDirection: "row",
     justifyContent: "center",
     gap: 20,
   },
@@ -184,7 +197,6 @@ const styles = StyleSheet.create({
     height: 200,
   },
   detailContainer: {
-    flexDirection: "row",
     justifyContent: "space-between",
     paddingLeft: 30,
     paddingRight: 30,
@@ -195,5 +207,5 @@ const styles = StyleSheet.create({
     flex: 1 / 3,
     height: 60,
   },
-  detailValue: { flexDirection: "row", alignItems: "center", gap: 10 },
+  detailValue: { alignItems: "center", gap: 10 },
 });

@@ -11,23 +11,45 @@ type Props = {
 
 export const PokemonStat = ({ color, name, value }: Props) => {
   return (
-    <Row>
+    <Row style={{ paddingLeft: 30, paddingRight: 30, gap: 8, height: 12 }}>
       <UseFontStyle
         text={name}
         variant="subtitle3"
         color={color}
-        style={{ textAlign: "end", width: '10%' }}
+        style={{ width: 31 }}
       />
       <View
         style={{
-          marginLeft: 10,
-          marginRight: 10,
-          borderRightColor: Colors.grey,
-          borderRightWidth: 1,
+          borderColor: Colors.grey,
           borderStyle: "solid",
+          borderWidth: 1,
+          height: 30,
         }}
-      ></View>
-      <UseFontStyle text={value.toString()} variant="body3" />
+      />
+      <UseFontStyle
+        text={value.toString().padStart(3, "0")}
+        variant="body3"
+        style={{ width: 23 }}
+      />
+      <Row style={{ height: 4, flex: 1, borderRadius: 20 }}>
+        <View
+          style={{
+            borderColor: color,
+            borderStyle: "solid",
+            borderWidth: 2,
+            width: 50,
+          }}
+        />
+        <View
+          style={{
+            borderColor: color,
+            borderStyle: "solid",
+            borderWidth: 2,
+            opacity: 0.5,
+            flex: 1,
+          }}
+        />
+      </Row>
     </Row>
   );
 };
